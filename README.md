@@ -67,11 +67,11 @@ These units of the pressure are supported:
 
 - ```ts
   class Pressure {
-    constructor(fromValue: number, fromUnit: PressureUnitsInputs = "Pa");
+    constructor(fromValue: number, fromUnit?: PressureUnitsInputs);
     toObject(): Record<PressureUnitsSymbolASCII, number>;
-    toString(toUnit: PressureUnitsInputs = "Pa"): string;
-    toValue(toUnit: PressureUnitsInputs = "Pa"): number;
-    static unit(unit: PressureUnitsInputs = "Pa"): PressureUnitMeta;
+    toString(toUnit?: PressureUnitsInputs): string;
+    toValue(toUnit?: PressureUnitsInputs): number;
+    static unit(unit?: PressureUnitsInputs): PressureUnitMeta;
     static units(): PressureUnitMeta[];
   }
   ```

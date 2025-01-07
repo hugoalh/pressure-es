@@ -1,55 +1,64 @@
-//#region Define Units Conversion
-const unitsSymbols = {
-	/*
-	KEY: ASCII symbol of the unit.
-	VALUES: Symbols of the unit, the standard symbol must at the first index.
-
-	SI unit must at the first row.
-	*/
-	"Pa": ["Pa"],// SI
-	"bar": ["bar"],
-	"psi": ["psi"],
-	"atm": ["atm"],
-	"at": ["at"],
-	"Torr": ["Torr"]
-} as const;
 /**
- * Type of the ASCII symbol of all of the supported pressure units.
+ * ASCII symbol of all of the supported pressure units.
  */
-export type PressureUnitsSymbolASCII = keyof typeof unitsSymbols;
-const unitSISymbolASCII: PressureUnitsSymbolASCII = Object.keys(unitsSymbols)[0] as PressureUnitsSymbolASCII;
+export type PressureUnitsSymbolASCII =
+	| "at"
+	| "atm"
+	| "bar"
+	| "Pa"
+	| "psi"
+	| "Torr";
 /**
- * Type of the symbols of all of the supported pressure units.
+ * Names of all of the supported pressure units.
  */
-export type PressureUnitsSymbols = typeof unitsSymbols[PressureUnitsSymbolASCII][number];
-const unitsNames = {
-	/*
-	KEY: ASCII symbol of the unit.
-	VALUES: Names of the unit, the standard name must at the first index.
-
-	SI unit must at the first row.
-	*/
-	"Pa": ["Pascal"],// SI
-	"bar": ["Bar"],
-	"psi": ["Pound Per Square Inch"],
-	"atm": ["Standard Atmosphere"],
-	"at": ["Technical Atmosphere"],
-	"Torr": ["Torr"]
-} as const;
+export type PressureUnitsNames =
+	| "Bar"
+	| "Pascal"
+	| "Pound Per Square Inch"
+	| "Standard Atmosphere"
+	| "Technical Atmosphere"
+	| "Torr";
 /**
- * Type of the names of all of the supported pressure units.
+ * Symbols of all of the supported pressure units.
  */
-export type PressureUnitsNames = typeof unitsNames[PressureUnitsSymbolASCII][number];
+export type PressureUnitsSymbols =
+	| "at"
+	| "atm"
+	| "bar"
+	| "Pa"
+	| "psi"
+	| "Torr";
 /**
- * Type of the unit input of all of the supported pressure units.
+ * Inputs of all of the supported pressure units.
  */
-export type PressureUnitsInput = PressureUnitsNames | PressureUnitsSymbolASCII | PressureUnitsSymbols;
-interface UnitConverter {
+export type PressureUnitsInputs = PressureUnitsSymbolASCII | PressureUnitsNames | PressureUnitsSymbols;
+export interface PressureUnitMeta<A extends string = string, N extends string[] | readonly string[] = string[], S extends string[] | readonly string[] = string[]> {
+	/**
+	 * Whether is the SI unit (International System of Units) of the pressure.
+	 */
+	isSIUnit: boolean;
+	/**
+	 * Names of the pressure unit. The standard name is at the first index.
+	 */
+	names: N;
+	/**
+	 * ASCII symbol of the pressure unit. Majorly use for internal index.
+	 */
+	symbolASCII: A;
+	/**
+	 * Symbols of the pressure unit. The standard symbol is at the first index.
+	 */
+	symbols: S;
+}
+interface UnitInfo extends Omit<PressureUnitMeta<PressureUnitsSymbolASCII, readonly PressureUnitsNames[], readonly PressureUnitsSymbols[]>, "isSIUnit"> {
 	fromSI: (valueSI: number) => number;
 	toSI: (valueCurrent: number) => number;
 }
-const unitsConverters: Record<PressureUnitsSymbolASCII, UnitConverter> = {
-	Pa: {// SI
+const units: readonly Readonly<UnitInfo>[] = [
+	{
+		names: ["Pascal"],
+		symbolASCII: "Pa",
+		symbols: ["Pa"],
 		fromSI(valueSI: number): number {
 			return valueSI;
 		},
@@ -57,7 +66,10 @@ const unitsConverters: Record<PressureUnitsSymbolASCII, UnitConverter> = {
 			return valueCurrent;
 		}
 	},
-	bar: {
+	{
+		names: ["Bar"],
+		symbolASCII: "bar",
+		symbols: ["bar"],
 		fromSI(valueSI: number): number {
 			return (valueSI / 1e5);
 		},
@@ -65,7 +77,10 @@ const unitsConverters: Record<PressureUnitsSymbolASCII, UnitConverter> = {
 			return (valueCurrent * 1e5);
 		}
 	},
-	psi: {
+	{
+		names: ["Pound Per Square Inch"],
+		symbolASCII: "psi",
+		symbols: ["psi"],
 		fromSI(valueSI: number): number {
 			return (valueSI / ((0.45359237 * 9.80665) / (0.0254 ** 2)));
 		},
@@ -73,7 +88,10 @@ const unitsConverters: Record<PressureUnitsSymbolASCII, UnitConverter> = {
 			return (valueCurrent * ((0.45359237 * 9.80665) / (0.0254 ** 2)));
 		}
 	},
-	atm: {
+	{
+		names: ["Standard Atmosphere"],
+		symbolASCII: "atm",
+		symbols: ["atm"],
 		fromSI(valueSI: number): number {
 			return (valueSI / 101325);
 		},
@@ -81,7 +99,10 @@ const unitsConverters: Record<PressureUnitsSymbolASCII, UnitConverter> = {
 			return (valueCurrent * 101325);
 		}
 	},
-	at: {
+	{
+		names: ["Technical Atmosphere"],
+		symbolASCII: "at",
+		symbols: ["at"],
 		fromSI(valueSI: number): number {
 			return (valueSI / 98066.5);
 		},
@@ -89,7 +110,10 @@ const unitsConverters: Record<PressureUnitsSymbolASCII, UnitConverter> = {
 			return (valueCurrent * 98066.5);
 		}
 	},
-	Torr: {
+	{
+		names: ["Torr"],
+		symbolASCII: "Torr",
+		symbols: ["Torr"],
 		fromSI(valueSI: number): number {
 			return (valueSI / (101325 / 760));
 		},
@@ -97,48 +121,48 @@ const unitsConverters: Record<PressureUnitsSymbolASCII, UnitConverter> = {
 			return (valueCurrent * (101325 / 760));
 		}
 	}
-};
-//#endregion
-//#region Converter
-export interface PressureUnitMeta {
-	/**
-	 * Whether this is the SI unit of the pressure.
-	 */
-	isSIUnit: boolean;
-	/**
-	 * Names of the pressure unit, the standard name is at the first index.
-	 */
-	names: string[];
-	/**
-	 * ASCII symbol of the pressure unit, design for internal usage.
-	 */
-	symbolASCII: string;
-	/**
-	 * Symbols of the pressure unit, the standard symbol is at the first index.
-	 */
-	symbols: string[];
-}
+];
+const unitSI: PressureUnitsSymbolASCII = "Pa";
 /**
- * Resolve unit input as ASCII symbol of the unit.
- * @access private
+ * Resolve unit input.
  * @param {string} parameterName Name of the parameter.
- * @param {string} value Unit input.
- * @returns {PressureUnitsSymbolASCII} ASCII symbol of the unit.
+ * @param {string} input Input.
+ * @returns {Readonly<UnitInfo>} ASCII symbol of the unit.
  */
-function resolveUnitInput(parameterName: string, value: string): PressureUnitsSymbolASCII {
-	for (const [unitSymbolASCII, unitSymbols] of Object.entries(unitsSymbols)) {
-		const unitNames = unitsNames[unitSymbolASCII as PressureUnitsSymbolASCII];
+function resolveUnitInput(parameterName: string, input: string): Readonly<UnitInfo> {
+	for (const unit of units) {
 		if (
-			value === unitSymbolASCII ||
-			//@ts-ignore Type conflict not exist.
-			unitSymbols.includes(value) ||
-			//@ts-ignore Type conflict not exist.
-			unitNames.includes(value)
+			input === unit.symbolASCII ||
+			unit.names.includes(input as PressureUnitsNames) ||
+			unit.symbols.includes(input as PressureUnitsSymbols)
 		) {
-			return unitSymbolASCII as PressureUnitsSymbolASCII;
+			return unit;
 		}
 	}
-	throw new SyntaxError(`\`${value}\` (parameter \`${parameterName}\`) is not a known pressure unit!`);
+	throw new RangeError(`\`${input}\` (parameter \`${parameterName}\`) is not a supported pressure unit! Only accept these values: ${Array.from(new Set<string>(units.flatMap(({
+		names,
+		symbolASCII,
+		symbols
+	}: Readonly<UnitInfo>): string[] => {
+		return [...names, symbolASCII, ...symbols];
+	})).values()).sort().join(", ")}`);
+}
+/**
+ * Resolve unit meta.
+ * @param {PressureUnitsSymbolASCII} input Input.
+ * @returns {PressureUnitMeta} Meta of the unit.
+ */
+function resolveUnitMeta(input: PressureUnitsSymbolASCII): PressureUnitMeta {
+	const {
+		names,
+		symbols
+	} = resolveUnitInput("$internal", input);
+	return {
+		isSIUnit: input === unitSI,
+		names: [...names],
+		symbolASCII: input,
+		symbols: [...symbols]
+	};
 }
 /**
  * Convert between units of the pressure.
@@ -147,20 +171,20 @@ export class Pressure {
 	#table: Map<PressureUnitsSymbolASCII, number> = new Map<PressureUnitsSymbolASCII, number>();
 	/**
 	 * @param {number} fromValue From value.
-	 * @param {PressureUnitsInput} [fromUnit="Pa"] From unit.
+	 * @param {PressureUnitsInputs} [fromUnit="Pa"] From unit.
 	 */
-	constructor(fromValue: number, fromUnit: PressureUnitsInput = "Pa") {
-		if (!(typeof fromValue === "number" && !Number.isNaN(fromValue))) {
-			throw new TypeError(`\`${fromValue}\` (parameter \`fromValue\`) is not a number!`);
+	constructor(fromValue: number, fromUnit: PressureUnitsInputs = "Pa") {
+		if (Number.isNaN(fromValue)) {
+			throw new RangeError(`\`${fromValue}\` (parameter \`fromValue\`) is not a number!`);
 		}
-		const fromUnitSymbolASCII: PressureUnitsSymbolASCII = resolveUnitInput("fromUnit", fromUnit);
-		this.#table.set(fromUnitSymbolASCII, fromValue);
-		if (fromUnitSymbolASCII !== unitSISymbolASCII) {
-			this.#table.set(unitSISymbolASCII, unitsConverters[fromUnitSymbolASCII].toSI(fromValue));
+		const fromUnitInfo: Readonly<UnitInfo> = resolveUnitInput("fromUnit", fromUnit);
+		this.#table.set(fromUnitInfo.symbolASCII, fromValue);
+		if (fromUnitInfo.symbolASCII !== unitSI) {
+			this.#table.set(unitSI, fromUnitInfo.toSI(fromValue));
 		}
-		for (const [unitSymbolASCII, unitConverter] of (Object.entries(unitsConverters) as [PressureUnitsSymbolASCII, UnitConverter][])) {
-			if (!this.#table.has(unitSymbolASCII)) {
-				this.#table.set(unitSymbolASCII, unitConverter.fromSI(this.#table.get(unitSISymbolASCII)!));
+		for (const unit of units) {
+			if (!this.#table.has(unit.symbolASCII)) {
+				this.#table.set(unit.symbolASCII, unit.fromSI(this.#table.get(unitSI)!));
 			}
 		}
 	}
@@ -173,47 +197,39 @@ export class Pressure {
 	}
 	/**
 	 * Get value of the unit with standard symbol.
-	 * @param {PressureUnitsInput} [toUnit="Pa"] To unit.
+	 * @param {PressureUnitsInputs} [toUnit="Pa"] To unit.
 	 * @returns {string} Value of the unit with standard symbol.
 	 */
-	toString(toUnit: PressureUnitsInput = "Pa"): string {
-		const toUnitSymbolASCII: PressureUnitsSymbolASCII = resolveUnitInput("toUnit", toUnit);
-		return `${this.#table.get(toUnitSymbolASCII)!} ${unitsSymbols[toUnitSymbolASCII][0]}`;
+	toString(toUnit: PressureUnitsInputs = "Pa"): string {
+		const {
+			symbolASCII,
+			symbols
+		}: Readonly<UnitInfo> = resolveUnitInput("toUnit", toUnit);
+		return `${this.#table.get(symbolASCII)!} ${symbols[0]}`;
 	}
 	/**
 	 * Get value of the unit.
-	 * @param {PressureUnitsInput} [toUnit="Pa"] To unit.
+	 * @param {PressureUnitsInputs} [toUnit="Pa"] To unit.
 	 * @returns {number} Value of the unit.
 	 */
-	toValue(toUnit: PressureUnitsInput = "Pa"): number {
-		return this.#table.get(resolveUnitInput("toUnit", toUnit))!;
+	toValue(toUnit: PressureUnitsInputs = "Pa"): number {
+		return this.#table.get(resolveUnitInput("toUnit", toUnit).symbolASCII)!;
 	}
 	/**
 	 * Get meta of the unit.
-	 * @param {PressureUnitsInput} [unit="Pa"] Unit.
+	 * @param {PressureUnitsInputs} [unit="Pa"] Unit.
 	 * @returns {PressureUnitMeta} Meta of the unit.
 	 */
-	static unit(unit: PressureUnitsInput = "Pa"): PressureUnitMeta {
-		const unitSymbolASCII: PressureUnitsSymbolASCII = resolveUnitInput("unit", unit);
-		return {
-			isSIUnit: unitSymbolASCII === unitSISymbolASCII,
-			names: [...unitsNames[unitSymbolASCII as PressureUnitsSymbolASCII] as unknown as string[]],
-			symbolASCII: unitSymbolASCII,
-			symbols: [...unitsSymbols[unitSymbolASCII] as unknown as string[]]
-		};
+	static unit(unit: PressureUnitsInputs = "Pa"): PressureUnitMeta {
+		return resolveUnitMeta(resolveUnitInput("unit", unit).symbolASCII);
 	}
 	/**
 	 * Get meta of the units.
 	 * @returns {PressureUnitMeta[]} Meta of the units.
 	 */
 	static units(): PressureUnitMeta[] {
-		return Object.entries(unitsSymbols).map(([unitSymbolASCII, unitSymbols]): PressureUnitMeta => {
-			return {
-				isSIUnit: unitSymbolASCII === unitSISymbolASCII,
-				names: [...unitsNames[unitSymbolASCII as PressureUnitsSymbolASCII] as unknown as string[]],
-				symbolASCII: unitSymbolASCII,
-				symbols: [...unitSymbols as unknown as string[]]
-			};
+		return units.map(({ symbolASCII }: Readonly<UnitInfo>): PressureUnitMeta => {
+			return resolveUnitMeta(symbolASCII);
 		});
 	}
 }
@@ -221,11 +237,10 @@ export default Pressure;
 /**
  * Convert between units of the pressure.
  * @param {number} fromValue From value.
- * @param {PressureUnitsInput} [fromUnit="Pa"] From unit.
- * @param {PressureUnitsInput} [toUnit="Pa"] To unit.
+ * @param {PressureUnitsInputs} [fromUnit="Pa"] From unit.
+ * @param {PressureUnitsInputs} [toUnit="Pa"] To unit.
  * @returns {number} Value of the unit.
  */
-export function convertPressure(fromValue: number, fromUnit: PressureUnitsInput = "Pa", toUnit: PressureUnitsInput = "Pa"): number {
+export function convertPressure(fromValue: number, fromUnit: PressureUnitsInputs = "Pa", toUnit: PressureUnitsInputs = "Pa"): number {
 	return new Pressure(fromValue, fromUnit).toValue(toUnit);
 }
-//#endregion

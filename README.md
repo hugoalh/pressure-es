@@ -6,7 +6,7 @@
 [![JSR: @hugoalh/pressure](https://img.shields.io/jsr/v/@hugoalh/pressure?label=@hugoalh/pressure&labelColor=F7DF1E&logo=jsr&logoColor=000000&style=flat "JSR: @hugoalh/pressure")](https://jsr.io/@hugoalh/pressure)
 [![NPM: @hugoalh/pressure](https://img.shields.io/npm/v/@hugoalh/pressure?label=@hugoalh/pressure&labelColor=CB3837&logo=npm&logoColor=ffffff&style=flat "NPM: @hugoalh/pressure")](https://www.npmjs.com/package/@hugoalh/pressure)
 
-An ES (JavaScript & TypeScript) module to convert between units of the pressure.
+An ECMAScript (JavaScript & TypeScript) module to convert between units of the pressure.
 
 These units of the pressure are supported:
 

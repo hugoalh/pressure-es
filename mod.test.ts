@@ -1,4 +1,4 @@
-import { assertEquals } from "STD/assert/equals";
+import { deepStrictEqual } from "node:assert";
 import { Pressure } from "./mod.ts";
 Deno.test("Conversion 1", { permissions: "none" }, async (t) => {
 	const pressureFromBar = new Pressure(1, "Bar");
@@ -6,10 +6,10 @@ Deno.test("Conversion 1", { permissions: "none" }, async (t) => {
 		console.log(pressureFromBar.toObject());
 	});
 	await t.step("To String", () => {
-		assertEquals(pressureFromBar.toString(), "100000 Pa");
+		deepStrictEqual(pressureFromBar.toString(), "100000 Pa");
 	});
 	await t.step("To Value", () => {
-		assertEquals(pressureFromBar.toValue(), 100000);
+		deepStrictEqual(pressureFromBar.toValue(), 100000);
 	});
 });
 Deno.test("Conversion 2", { permissions: "none" }, async (t) => {
@@ -18,10 +18,10 @@ Deno.test("Conversion 2", { permissions: "none" }, async (t) => {
 		console.log(pressureFromPa.toObject());
 	});
 	await t.step("To String", () => {
-		assertEquals(pressureFromPa.toString("Bar"), "1 bar");
+		deepStrictEqual(pressureFromPa.toString("Bar"), "1 bar");
 	});
 	await t.step("To Value", () => {
-		assertEquals(pressureFromPa.toValue("Bar"), 1);
+		deepStrictEqual(pressureFromPa.toValue("Bar"), 1);
 	});
 });
 Deno.test("Units Meta", { permissions: "none" }, () => {

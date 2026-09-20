@@ -81,7 +81,7 @@ This does not request any runtime permission.
   //=> "1 bar"
   ```
 
-## 📚 External Resources
+## 📚 Resources
 
 - Wikipedia
   - [Pressure measurement - Units](https://en.wikipedia.org/wiki/Pressure_measurement#Units)

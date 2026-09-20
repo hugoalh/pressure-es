@@ -65,19 +65,21 @@ This does not request any runtime permission.
 ## ✍️ Examples
 
 - ```ts
-  new Pressure(1, "Bar").toValue("Pa");
+  const instance = new Pressure(1, "Bar");
+
+  instance.toValue("Pa");
   //=> 100000
-  ```
-- ```ts
-  new Pressure(1, "Bar").toString("Pa");
+
+  instance.toString("Pa");
   //=> "100000 Pa"
   ```
 - ```ts
-  new Pressure(100000, "Pa").toValue("Bar");
+  const instance = new Pressure(100000, "Pa");
+
+  instance.toValue("Bar");
   //=> 1
-  ```
-- ```ts
-  new Pressure(100000, "Pa").toString("Bar");
+
+  instance.toString("Bar");
   //=> "1 bar"
   ```
 

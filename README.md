@@ -3,7 +3,8 @@
 [**⚖️** MIT](./LICENSE.md)
 
 🔗
-[GitHub](https://github.com/hugoalh/pressure-es)
+[DistBoard @hugoalh](https://hugoalh.github.io/distboard/pressure_ecmascript)
+● [GitHub](https://github.com/hugoalh/pressure-es)
 ● [JSR](https://jsr.io/@hugoalh/pressure)
 ● [NPM](https://www.npmjs.com/package/@hugoalh/pressure)
 
@@ -11,18 +12,16 @@ An ECMAScript module to convert between units of the pressure.
 
 These units of the pressure are supported:
 
-|  |  | **Names** | **Symbols** |
-|:-:|:--|:--|:--|
-| ***\[SI\]*** | **Pascal** | `Pascal` | `Pa` |
-|  | **Bar** | `Bar` | `bar` |
-|  | **Pound Per Square Inch** | `Pound Per Square Inch` | `psi` |
-|  | **Standard Atmosphere** | `Standard Atmosphere` | `atm` |
-|  | **Technical Atmosphere** | `Technical Atmosphere` | `at` |
-|  | **Torr** | `Torr` | `Torr` |
+| **Unit** | **Keys** | **Symbols** |
+|:--|:--|:--|
+| Pascal **\[SI\]** | `Pascal` | `Pa` |
+| Bar | `Bar` | `bar` |
+| Pound Per Square Inch | `Pound Per Square Inch` | `psi` |
+| Standard Atmosphere | `Standard Atmosphere` | `atm` |
+| Technical Atmosphere | `Technical Atmosphere` | `at` |
+| Torr | `Torr` | `Torr` |
 
-## 🔰 Begin
-
-### 🎯 Runtime Targets
+## 🎯 Runtime Targets
 
 Any runtime which support ECMAScript should able to use this; These runtimes are officially supported:
 
@@ -30,31 +29,22 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
 - **[Deno](https://deno.land/)** >= v2.1.0
 - **[NodeJS](https://nodejs.org/)** >= v20.9.0
 
-### #️⃣ Resources Identifier
+## 🛡️ Runtime Permissions
 
-- GitHub Raw
-  ```
-  https://raw.githubusercontent.com/hugoalh/pressure-es/{Tag}/mod.ts
-  ```
-- JSR
-  ```
-  jsr:@hugoalh/pressure[@{Tag}]
-  ```
-- NPM
-  ```
-  npm:@hugoalh/pressure[@{Tag}]
-  ```
+This does not request any runtime permission.
+
+## #️⃣ Entrypoints
+
+| **Name** | **Path** | **Description** |
+|:--|:--|:--|
+| `.` | `./mod.ts` | Default. |
 
 > [!NOTE]
-> - It is recommended to include tag for immutability.
+> - Different runtimes have vary support for the entrypoints, visit the runtime documentation for more information.
 > - These are not part of the public APIs hence should not be used:
 >   - Benchmark/Test file (e.g.: `example.bench.ts`, `example.test.ts`).
 >   - Entrypoint name or path include any underscore prefix (e.g.: `_example.ts`, `foo/_example.ts`).
 >   - Identifier/Namespace/Symbol include any underscore prefix (e.g.: `_example`, `Foo._example`).
-
-### 🛡️ Runtime Permissions
-
-This does not request any runtime permission.
 
 ## 🧩 APIs
 
@@ -71,7 +61,7 @@ This does not request any runtime permission.
 
 > [!NOTE]
 > - For the full or prettier documentation, can visit via:
->   - [Deno CLI `deno doc`](https://docs.deno.com/runtime/reference/cli/doc/)
+>   - [Deno CLI `deno doc`](https://docs.deno.com/runtime/reference/cli/doc)
 >   - [JSR](https://jsr.io/@hugoalh/pressure)
 
 ## ✍️ Examples
@@ -93,7 +83,7 @@ This does not request any runtime permission.
   //=> "1 bar"
   ```
 
-## 📚 Guides
+## 📚 External Resources
 
 - Wikipedia
   - [Pressure measurement - Units](https://en.wikipedia.org/wiki/Pressure_measurement#Units)

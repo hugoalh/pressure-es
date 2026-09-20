@@ -50,12 +50,10 @@ This does not request any runtime permission.
 
 - ```ts
   class Pressure {
-    constructor(fromValue: number, fromUnit?: PressureUnitsInputs);
+    constructor(fromValue: number, fromUnit: PressureUnitsInputs);
     toObject(): Record<PressureUnitsSymbolASCII, number>;
-    toString(toUnit?: PressureUnitsInputs): string;
-    toValue(toUnit?: PressureUnitsInputs): number;
-    static unit(unit?: PressureUnitsInputs): PressureUnitMeta;
-    static units(): PressureUnitMeta[];
+    toString(toUnit: PressureUnitsInputs): string;
+    toValue(toUnit: PressureUnitsInputs): number;
   }
   ```
 
@@ -67,19 +65,19 @@ This does not request any runtime permission.
 ## ✍️ Examples
 
 - ```ts
-  new Pressure(1, "Bar").toValue();
+  new Pressure(1, "Bar").toValue("Pa");
   //=> 100000
   ```
 - ```ts
-  new Pressure(1, "Bar").toString();
+  new Pressure(1, "Bar").toString("Pa");
   //=> "100000 Pa"
   ```
 - ```ts
-  new Pressure(100000).toValue("Bar");
+  new Pressure(100000, "Pa").toValue("Bar");
   //=> 1
   ```
 - ```ts
-  new Pressure(100000).toString("Bar");
+  new Pressure(100000, "Pa").toString("Bar");
   //=> "1 bar"
   ```
 
